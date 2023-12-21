@@ -9,11 +9,11 @@ dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  host: "localhost",
-  port: 3306,
-  username: "root",
+  host: process.env.DB_HOST || "localhost",
+  port: parseInt(process.env.DB_PORT) || 3306,
+  username: process.env.DB_USERNAME || "root",
   password: process.env.DB_PASSWORD || "root",
-  database: "event_inventory",
+  database: process.env.DB_DATABASE || "event_inventory",
   synchronize: true,
   logging: false,
   entities: [
