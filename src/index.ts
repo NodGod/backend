@@ -28,8 +28,7 @@ async function seedDB() {
     const maxUserId = await AppDataSource.manager.query('SELECT MAX(id) as maxId FROM user');
     const maxEventId = await AppDataSource.manager.query('SELECT MAX(id) as maxId FROM organised_event');
     const maxOrganiserId = await AppDataSource.manager.query('SELECT MAX(id) as maxId FROM organiser');
-    AppDataSource.manager.clear(User);
-    AppDataSource.manager.clear(Organiser);
+    
 
     let nextItemId = (parseInt(maxItemId[0].maxId) || 0) + 1;
     let nextUserId = (parseInt(maxUserId[0].maxId) || 0) + 1;
