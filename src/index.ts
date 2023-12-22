@@ -94,6 +94,7 @@ async function seedDB() {
       newAdmin.password = "$2a$10$TpJDPglx05fUPA8bbxsLeuya/B60EsmAXLopT4Ofp0lqQ28euKLwC";
       newAdmin.type = 1;
       newAdmin.approved = true;
+      newAdmin.token = "";
       const organiser1 = new Organiser();
         organiser1.id = nextOrganiserId++;
         organiser1.name = "admin";
