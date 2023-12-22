@@ -8,6 +8,9 @@ export class OrganiserController{
 
 export const createOrganiser = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const { name, phoneNumber, email } = req.body;
     if (!name || !phoneNumber || !email) {
       return res.status(400).json({ error: 'Name, phoneNumber, and email are required fields.' });
@@ -33,9 +36,12 @@ export const createOrganiser = async (req: Request, res: Response) => {
 
 export const getAllOrganisers = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserRepository = AppDataSource.getRepository(Organiser);
     const organisers = await organiserRepository.find();
-    res.json({ organisers });
+    res.json({ organisers});
   } catch (error) {
     console.error('Error creating organiser:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -44,6 +50,9 @@ export const getAllOrganisers = async (req: Request, res: Response) => {
 
 export const getOrganiserById = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const organiserRepository = AppDataSource.getRepository(Organiser);
     const organiser = await organiserRepository.findOne({
@@ -63,6 +72,9 @@ export const getOrganiserById = async (req: Request, res: Response) => {
 
 export const updateOrganiser = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const { name, phoneNumber, email } = req.body;
 
@@ -90,6 +102,9 @@ export const updateOrganiser = async (req: Request, res: Response) => {
 
 export const deleteOrganiser = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
 
     const organiserRepository = AppDataSource.getRepository(Organiser);

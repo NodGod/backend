@@ -9,6 +9,9 @@ export class EventController{
 
 export const createEvent = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const { name, description, date, address} = req.body;
     if (!name || !description || !date || !address) {
@@ -44,6 +47,9 @@ export const createEvent = async (req: Request, res: Response) => {
 
 export const getAllEvents = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const eventRepository = AppDataSource.getRepository(OrganisedEvent);
     const events = await eventRepository.find({
@@ -62,6 +68,9 @@ export const getAllEvents = async (req: Request, res: Response) => {
 
 export const getEventById = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const eventId = parseInt(req.params.eid);
     const eventRepository = AppDataSource.getRepository(OrganisedEvent);
@@ -82,6 +91,9 @@ export const getEventById = async (req: Request, res: Response) => {
 
 export const updateEvent = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const organiserRepository = AppDataSource.getRepository(Organiser);
     const eventRepository = AppDataSource.getRepository(OrganisedEvent);
@@ -111,6 +123,9 @@ export const updateEvent = async (req: Request, res: Response) => {
 
 export const deleteEvent = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const eventRepository = AppDataSource.getRepository(OrganisedEvent);
     const eventId = parseInt(req.params.eid);

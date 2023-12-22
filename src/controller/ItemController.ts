@@ -9,6 +9,9 @@ export class ItemController{
 
 export const createItem = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const eventId = parseInt(req.params.eid);
     const { name, quantity, price} = req.body;
@@ -44,6 +47,9 @@ export const createItem = async (req: Request, res: Response) => {
 
 export const getAllItems = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const eventId = parseInt(req.params.eid);
     const itemRepository = AppDataSource.getRepository(Item);
@@ -60,6 +66,9 @@ export const getAllItems = async (req: Request, res: Response) => {
 
 export const getItemById = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const eventId = parseInt(req.params.eid);
     const itemId = parseInt(req.params.iid);
@@ -81,6 +90,9 @@ export const getItemById = async (req: Request, res: Response) => {
 
 export const updateItem = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const eventId = parseInt(req.params.eid);
     const eventRepository = AppDataSource.getRepository(OrganisedEvent);
@@ -89,7 +101,7 @@ export const updateItem = async (req: Request, res: Response) => {
     const { name, quantity, price} = req.body;
 
     const item = await itemRepository.findOne({
-      where: {id: itemId, event: {id: eventId, organiser: {id: organiserId}}}
+      where: {id: itemId, event: {id: eventId}}
     });
 
     if (!item) {
@@ -110,6 +122,9 @@ export const updateItem = async (req: Request, res: Response) => {
 
 export const deleteItem = async (req: Request, res: Response) => {
   try {
+    if(req.headers.role != "1" && req.headers.role != "0"){
+      return res.status(401).json({error: "Access denied"})
+    }
     const organiserId = parseInt(req.params.id);
     const eventId = parseInt(req.params.eid);
     const itemRepository = AppDataSource.getRepository(Item);

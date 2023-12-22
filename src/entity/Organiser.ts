@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, ManyToMany } from 'typeorm';
 import { OrganisedEvent } from './Event';
+import { User } from './User';
 
 @Entity()
 export class Organiser {
@@ -17,4 +18,8 @@ export class Organiser {
 
   @OneToMany(() => OrganisedEvent, event => event.organiser, {cascade: true})
   events: OrganisedEvent[];
+
+  @OneToMany(() => User, user => user.organisation)
+  members: User[]
+
 }

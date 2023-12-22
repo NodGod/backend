@@ -6,6 +6,7 @@ import { AppDataSource } from "./data-source";
 import { Item } from "./entity/Item";
 import { OrganisedEvent } from "./entity/Event";
 import { Organiser } from "./entity/Organiser";
+import { User } from "./entity/User";
 
 AppDataSource.initialize()
   .then(async () => {
@@ -24,12 +25,16 @@ AppDataSource.initialize()
 
 async function seedDB() {
     const maxItemId = await AppDataSource.manager.query('SELECT MAX(id) as maxId FROM item');
+    const maxUserId = await AppDataSource.manager.query('SELECT MAX(id) as maxId FROM user');
     const maxEventId = await AppDataSource.manager.query('SELECT MAX(id) as maxId FROM organised_event');
     const maxOrganiserId = await AppDataSource.manager.query('SELECT MAX(id) as maxId FROM organiser');
 
     let nextItemId = (parseInt(maxItemId[0].maxId) || 0) + 1;
+    let nextUserId = (parseInt(maxUserId[0].maxId) || 0) + 1;
     let nextEventId = (parseInt(maxEventId[0].maxId) || 0) + 1;
     let nextOrganiserId = (parseInt(maxOrganiserId[0].maxId) || 0) + 1;
+    const admin = await AppDataSource.getRepository(User).findOne({where: {type: 1}})
+    
     const res = await AppDataSource.manager.find(Organiser);
     if (res.length === 0) {
         const item1 = new Item();
@@ -79,6 +84,24 @@ async function seedDB() {
         organiser1.phoneNumber = "888888888";
         organiser1.events = [event1, event2];
         await AppDataSource.manager.save(organiser1);
+    }
+    if(admin == null){
+      const newAdmin = new User();
+      newAdmin.id = nextUserId++;
+      newAdmin.name = "admin";
+      newAdmin.surname = "admin";
+      newAdmin.email = "admin@admin.com";
+      newAdmin.password = "$2a$10$TpJDPglx05fUPA8bbxsLeuya/B60EsmAXLopT4Ofp0lqQ28euKLwC";
+      newAdmin.type = 1;
+      newAdmin.approved = true;
+      const organiser1 = new Organiser();
+        organiser1.id = nextOrganiserId++;
+        organiser1.name = "admin";
+        organiser1.email = "admin@admin.lt";
+        organiser1.phoneNumber = "888888888";
+      await AppDataSource.manager.save(organiser1);
+      newAdmin.organisation = organiser1;
+      await AppDataSource.manager.save(newAdmin);
     }
 }
 

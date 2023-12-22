@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 import { Organiser } from "./entity/Organiser";
 import { Item } from "./entity/Item";
 import { OrganisedEvent } from "./entity/Event";
+import { User } from "./entity/User";
 
 dotenv.config();
 
@@ -19,7 +20,8 @@ export const AppDataSource = new DataSource({
   entities: [
     OrganisedEvent,
     Item,
-    Organiser
+    Organiser,
+    User
   ],
   migrations: [],
   subscribers: [],
