@@ -28,13 +28,14 @@ async function seedDB() {
     const maxUserId = await AppDataSource.manager.query('SELECT MAX(id) as maxId FROM user');
     const maxEventId = await AppDataSource.manager.query('SELECT MAX(id) as maxId FROM organised_event');
     const maxOrganiserId = await AppDataSource.manager.query('SELECT MAX(id) as maxId FROM organiser');
+    AppDataSource.manager.clear(User);
+    AppDataSource.manager.clear(Organiser);
 
     let nextItemId = (parseInt(maxItemId[0].maxId) || 0) + 1;
     let nextUserId = (parseInt(maxUserId[0].maxId) || 0) + 1;
     let nextEventId = (parseInt(maxEventId[0].maxId) || 0) + 1;
     let nextOrganiserId = (parseInt(maxOrganiserId[0].maxId) || 0) + 1;
     const admin = await AppDataSource.getRepository(User).findOne({where: {type: 1}})
-    
     const res = await AppDataSource.manager.find(Organiser);
     if (res.length === 0) {
         const item1 = new Item();
